@@ -41,6 +41,7 @@ Commands:
   score-snapshot              - compute weighted scores for latest snapshot
     verify-snapshot             - run institutional verification (Oversight Gate) on latest snapshot
     run-agents                  - execute RVI/REM/SSS agents and store evidence
+    adaptive-enrichment [limit] - adaptive agent to enrich rules/pricing data
   help                        - show this help
 """
 
@@ -100,6 +101,17 @@ def main():
 
         asyncio.run(run_all())
         print(f"[agents] completed RVI/REM/SSS for {len(firms)} firms")
+        return 0
+
+    # -----------------------------------------------------
+    # adaptive enrichment agent
+    # -----------------------------------------------------
+    if cmd == "adaptive-enrichment":
+        limit = int(args[1]) if len(args) > 1 else 60
+        from gpti_bot.agents.adaptive_enrichment_agent import run_targeted_enrichment
+
+        result = run_targeted_enrichment(limit=limit)
+        print(f"[adaptive-enrichment] {result}")
         return 0
 
     # -----------------------------------------------------
