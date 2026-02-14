@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 220" role="img" aria-label="GTIXT lockup horizontal">
+  <rect x="0" y="0" width="980" height="220" fill="none"/>
+  <g transform="translate(20,12)">
+    <g>
+      <rect x="0" y="0" width="196" height="196" rx="44" fill="#0B1220"/>
+      <rect x="42" y="42" width="112" height="18" rx="9" fill="#2F6BFF"/>
+      <rect x="89" y="60" width="26" height="100" rx="13" fill="#2F6BFF"/>
+      <rect x="54" y="136" width="18" height="34" rx="5" fill="#E6EEF7"/>
+      <rect x="74" y="116" width="18" height="54" rx="5" fill="#E6EEF7"/>
+      <rect x="94" y="92" width="18" height="78" rx="5" fill="#E6EEF7"/>
+    </g>
+    <g transform="translate(230,44)">
+      <text x="0" y="64" font-family="Sora, Inter, system-ui, -apple-system, Segoe UI, Arial" font-weight="700" font-size="88" fill="#0B1220">GTIXT</text>
+      <text x="0" y="120" font-family="Inter, system-ui, -apple-system, Segoe UI, Arial" font-weight="500" font-size="28" fill="#334155">The Global Prop Trading Index</text>
+      <text x="0" y="154" font-family="Inter, system-ui, -apple-system, Segoe UI, Arial" font-weight="500" font-size="22" fill="#475569">Institutional Prop Trading Benchmark</text>
+    </g>
+  </g>
+</svg>

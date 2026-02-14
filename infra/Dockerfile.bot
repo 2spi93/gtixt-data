@@ -1,0 +1,15 @@
+FROM python:3.12-slim
+
+WORKDIR /app
+RUN pip install --no-cache-dir --upgrade pip
+
+COPY pyproject.toml /app/pyproject.toml
+COPY src /app/src
+COPY flows /app/flows
+
+RUN pip install --no-cache-dir -e .
+
+# If you use Playwright inside this container:
+# RUN pip install --no-cache-dir playwright && playwright install --with-deps
+
+CMD ["python", "-m", "gpti_bot", "help"]

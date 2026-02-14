@@ -1,0 +1,86 @@
+nohup: ignoring input
+ * Serving Flask app 'mini_chat_server'
+ * Debug mode: off
+INFO:werkzeug:[31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5050
+ * Running on http://51.210.246.61:5050
+INFO:werkzeug:[33mPress CTRL+C to quit[0m
+INFO:werkzeug:51.210.246.61 - - [04/Feb/2026 22:59:43] "GET /chat HTTP/1.1" 200 -
+INFO:werkzeug:205.210.31.108 - - [05/Feb/2026 09:26:14] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:00] code 400, message Bad request version ("»Ù'\x91ZSTÄª\x1a\x8fAè")
+INFO:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:00] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03o\x86µÛà?\x1f=ßT\x8f½xgï·\x1cÿ\x0c»Ù'\x91ZSTÄª\x1a\x8fAè [0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:04] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:07] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:07] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03\x119¸º$\x86½[P?\x12]²\x83(°ë \x93:õ¾\x09HoìSàKB\x80Ç \x0ci\x1a\x89.9Ê¸ÈÏh<ß\x00%#\x93~\x1b\x93\x9a\x9bß½(=eì\x84 \x14\x08\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:07] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:08] code 505, message Invalid HTTP version (2.0)
+INFO:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:08] "[35m[1mPRI * HTTP/2.0[0m" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+ERROR:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:12] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:12] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03.Z-®E,ó×E\x9aë\x90\x8b\x99¶ü!\x99\x1b´êÞ2Ë\x097Ëê£\x12Vþ ô¯j0\x16DeS_\x9a\x12d\x8bå\x86'Då\x05¼Wý|\x82c\x00\x87pÛsl\x1c\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:66.132.153.126 - - [05/Feb/2026 11:26:13] "[33mGET /sitemap.xml HTTP/1.1[0m" 404 -
+ERROR:werkzeug:80.94.95.43 - - [05/Feb/2026 11:41:34] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+INFO:werkzeug:80.94.95.43 - - [05/Feb/2026 11:41:34] "[35m[1m\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+ERROR:werkzeug:80.94.95.43 - - [05/Feb/2026 13:23:21] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+INFO:werkzeug:80.94.95.43 - - [05/Feb/2026 13:23:21] "[35m[1m\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:45.79.128.205 - - [06/Feb/2026 08:29:23] "[33mGET / HTTP/1.1[0m" 404 -
+INFO:werkzeug:45.33.12.122 - - [06/Feb/2026 08:35:03] "[33mGET / HTTP/1.1[0m" 404 -
+INFO:werkzeug:172.236.228.111 - - [06/Feb/2026 09:07:22] "[33mGET / HTTP/1.1[0m" 404 -
+INFO:werkzeug:198.235.24.231 - - [06/Feb/2026 09:18:31] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:167.94.138.191 - - [06/Feb/2026 11:56:12] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:167.94.138.191 - - [06/Feb/2026 11:56:12] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03A7elöÝ\x8c&2\x0cÎ¾\x0c\\Jè¶\x8b\x9dg\x9fW\x8aõ\x02\x9fiý\x14ë\x0eæ F\x86aAÙn¿´ß!ú\x83»bÙW5\x8b-ZMýo\x0b\x84æ\x09\x1aìp\x89á\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:167.94.138.191 - - [06/Feb/2026 11:56:13] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:167.94.138.191 - - [06/Feb/2026 11:56:13] code 505, message Invalid HTTP version (2.0)
+INFO:werkzeug:167.94.138.191 - - [06/Feb/2026 11:56:13] "[35m[1mPRI * HTTP/2.0[0m" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+ERROR:werkzeug:167.94.138.191 - - [06/Feb/2026 11:56:38] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:167.94.138.191 - - [06/Feb/2026 11:56:38] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03k0%þ\x00$4\x8f7\x8eûÂ\x89B2á\x0d\x8cÓ4\x1dÍ£ÀÊ¨Ã\x9a£[óy ÇÇ'Ä:n\x16ôÐ'fD¥\x93 Õíz¼Òä\x0b¼6°_Æ°výÎµ\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:167.94.138.191 - - [06/Feb/2026 11:56:40] "[33mGET /security.txt HTTP/1.1[0m" 404 -
+ERROR:werkzeug:176.65.132.23 - - [06/Feb/2026 13:31:57] code 400, message Bad request syntax ('\x05\x02\x00\x02')
+INFO:werkzeug:176.65.132.23 - - [06/Feb/2026 13:31:57] "[35m[1m\x05\x02\x00\x02[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:205.210.31.46 - - [06/Feb/2026 13:33:53] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:167.94.138.197 - - [07/Feb/2026 00:51:12] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:167.94.138.197 - - [07/Feb/2026 00:51:12] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03.\x0c\x06\x09ð[nå£7´Xþ0äq\x9d\x87Ñ¢'ÍÛä·Ìåóux\x82\x0c \x12dÐÚÁwêvâ\x86G´jì\x06xé3[Í\x0bEFÒ\x1bA\x99Wè\x15Ì\x07\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:167.94.138.197 - - [07/Feb/2026 00:51:17] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:167.94.138.197 - - [07/Feb/2026 00:51:23] code 505, message Invalid HTTP version (2.0)
+INFO:werkzeug:167.94.138.197 - - [07/Feb/2026 00:51:23] "[35m[1mPRI * HTTP/2.0[0m" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+ERROR:werkzeug:167.94.138.197 - - [07/Feb/2026 00:51:46] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:167.94.138.197 - - [07/Feb/2026 00:51:46] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03|Ì!)*\x83â|»ÛAv¾W|\x80\x14¬q0»\x8b\x11\x11=¿C$ÐEðù ^ü·ýh\x81íîÿÀ\x00Æâ!S[@\x09\x8f´Ð$ó\x01\x0d\x984$3ë\x0d"\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:167.94.138.197 - - [07/Feb/2026 00:51:48] "[33mGET /sitemap.xml HTTP/1.1[0m" 404 -
+INFO:werkzeug:198.235.24.89 - - [07/Feb/2026 01:34:22] "[33mGET / HTTP/1.1[0m" 404 -
+INFO:werkzeug:147.185.132.100 - - [07/Feb/2026 10:01:15] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:77.90.185.18 - - [07/Feb/2026 12:47:51] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+INFO:werkzeug:77.90.185.18 - - [07/Feb/2026 12:47:51] "[35m[1m\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:198.235.24.69 - - [07/Feb/2026 13:40:50] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:167.94.138.170 - - [07/Feb/2026 13:50:16] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:167.94.138.170 - - [07/Feb/2026 13:50:16] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03á\x18¢«B§ÿå\x8f\x92\x96²B\x91äË\x85¯×¢àI\x84:ÑéªHs²Y/ |á¸\x9fªìÖ³}ÑG\x85\x81\x13È|\x86Ù¨w]\x8c+26mk6*]\x83ô\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:167.94.138.170 - - [07/Feb/2026 13:50:19] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:167.94.138.170 - - [07/Feb/2026 13:50:24] code 505, message Invalid HTTP version (2.0)
+INFO:werkzeug:167.94.138.170 - - [07/Feb/2026 13:50:24] "[35m[1mPRI * HTTP/2.0[0m" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+ERROR:werkzeug:167.94.138.170 - - [07/Feb/2026 13:52:01] code 400, message Bad request version ('w')
+INFO:werkzeug:167.94.138.170 - - [07/Feb/2026 13:52:01] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03ò¬z7Û°öïÅOð°£+î\x19I]@ëM\x0e0¢¡\x11ÝS\x8cf½; ÿÇZ¸\x96Ö\x05\x04JCCnæRµRt\x95\x01\x85w[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:167.94.138.170 - - [07/Feb/2026 13:52:09] "[33mGET /sitemap.xml HTTP/1.1[0m" 404 -
+ERROR:werkzeug:77.90.185.18 - - [07/Feb/2026 14:33:10] code 400, message Bad HTTP/0.9 request type ('\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie:')
+INFO:werkzeug:77.90.185.18 - - [07/Feb/2026 14:33:10] "[35m[1m\x03\x00\x00/*à\x00\x00\x00\x00\x00Cookie: mstshash=Administr[0m" HTTPStatus.BAD_REQUEST -
+ERROR:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:29] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:29] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03WyV@¥-ª_,îòýï%¸yj\x98½ÂÔqÞ\x91íqïJ­fð% ÌÙ\x0b^sÆ\x0d\x1fñ.d\x98¦\\Á{%üi\x875å³¦\x9f!KÝ¾òL\x9e\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:32] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:35] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:35] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03À±¨S\x0cù\x9cÃ\x03j\x95ÛM:×\x1a"\x98¦©\x17\x0f7Åõ\x08¶Ê©À\x81` pê`V\x91¬¥\x1eòÒ\x1e\x8b\x92\x0d\x04l`þ0t¹\x7f\x05\x09\x88\x0d\x1a"n|¢þ\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:35] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:35] code 505, message Invalid HTTP version (2.0)
+INFO:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:35] "[35m[1mPRI * HTTP/2.0[0m" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+ERROR:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:40] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:40] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03©©¢x\x0e\x0b\x05@-N\x8968§¤.s\x1cò\x1aoU\\¿Ô?ò`jX&] ÿ¾\x85Po\x9bî\x8cì=ümV\\&ü;ÚKÓ\x9dUö\x0fû©\x8e#\x1a\x05!ª\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:167.94.146.61 - - [07/Feb/2026 18:42:41] "[33mGET /security.txt HTTP/1.1[0m" 404 -
+INFO:werkzeug:205.210.31.253 - - [07/Feb/2026 22:17:57] "[33mGET / HTTP/1.1[0m" 404 -
+INFO:werkzeug:198.235.24.168 - - [08/Feb/2026 01:41:11] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:162.142.125.219 - - [08/Feb/2026 06:50:40] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:162.142.125.219 - - [08/Feb/2026 06:50:40] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03bEs3\x01ÒeÔ\x13Ròn £\x90­<¥\x1a$ÈÌvS¦xý\x93¿ ¼V VûµEÂ5¢\x82~\x04ä«n\x08Úu\x06¢é\x09\x96\x92\x9c\x08R¤fýÇ"\x92÷\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:162.142.125.219 - - [08/Feb/2026 06:50:41] "[33mGET / HTTP/1.1[0m" 404 -
+ERROR:werkzeug:162.142.125.219 - - [08/Feb/2026 06:50:42] code 505, message Invalid HTTP version (2.0)
+INFO:werkzeug:162.142.125.219 - - [08/Feb/2026 06:50:42] "[35m[1mPRI * HTTP/2.0[0m" HTTPStatus.HTTP_VERSION_NOT_SUPPORTED -
+ERROR:werkzeug:162.142.125.219 - - [08/Feb/2026 06:50:58] code 400, message Bad request version ('À\x14À')
+INFO:werkzeug:162.142.125.219 - - [08/Feb/2026 06:50:58] "[35m[1m\x16\x03\x01\x00î\x01\x00\x00ê\x03\x03KT\x81ôs¤þ\x13\\*\x04\x15D\x94\x15ª+ZnËk\x8d!9\x92\x91þjý?qc æ\x01¬@Æþè\x806¥\x8c#\x09$ÛÙxë \x14=FMF+\x86\x1dNé\x13D/\x00&Ì¨Ì©À/À0À+À,À\x13À\x09À\x14À[0m" HTTPStatus.BAD_REQUEST -
+INFO:werkzeug:162.142.125.219 - - [08/Feb/2026 06:51:00] "[33mGET /sitemap.xml HTTP/1.1[0m" 404 -
+ERROR:werkzeug:130.12.180.95 - - [08/Feb/2026 09:07:56] code 400, message Bad request syntax ('\x05\x02\x00\x02')
+INFO:werkzeug:130.12.180.95 - - [08/Feb/2026 09:07:56] "[35m[1m\x05\x02\x00\x02[0m" HTTPStatus.BAD_REQUEST -

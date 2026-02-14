@@ -1,0 +1,29 @@
+[project]
+name = "gpti-data-bot"
+version = "0.0.1"
+description = "GPTI Universe v0 data bot (discovery, crawl, extract, evidence, snapshots)"
+requires-python = ">=3.11"
+dependencies = [
+  "requests>=2.32.0",
+  "beautifulsoup4>=4.12.3",
+  "lxml>=5.2.2",
+  "pypdf>=4.2.0",
+  "playwright>=1.46.0",
+  "pymupdf>=1.24.8",
+  "pytesseract>=0.3.13",
+  "pillow>=10.4.0",
+  "pydantic>=2.8.2",
+  "psycopg[binary]>=3.2.1",
+  "minio>=7.2.8",
+  "prefect>=3.0.0",
+  "python-dateutil>=2.9.0",
+]
+
+[project.scripts]
+gpti = "gpti_bot.cli:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]

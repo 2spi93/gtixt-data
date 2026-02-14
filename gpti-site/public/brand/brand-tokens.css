@@ -1,0 +1,16 @@
+:root{
+  --gtix-bg:#0B1220;
+  --gtix-panel:#0F1A2E;
+  --gtix-text:#E6EEF7;
+  --gtix-muted:#93A4B8;
+  --gtix-line:rgba(230,238,247,.10);
+  --gtix-blue:#2F6BFF;
+  --gtix-blue2:#2453CC;
+  --gtix-teal:#15B8A6;
+  --gtix-amber:#F59E0B;
+}
+
+/* Typography (suggested):
+   Headings: Sora (OFL-1.1)
+   Body/UI: Inter (OFL)
+*/
