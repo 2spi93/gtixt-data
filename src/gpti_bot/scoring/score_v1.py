@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from typing import Any, Dict, List, Optional, Tuple
+import re
 
 from ..db import connect
 
@@ -41,7 +42,7 @@ def _load_scoring_spec() -> Dict[str, Any]:
 def _bin_value(value: float, bins: List[float], labels: List[str], weights: List[float]) -> Tuple[str, float]:
     """Bin a numeric value and return the corresponding label and weight."""
     if value is None or not isinstance(value, (int, float)):
-        return "na", 0.5  # NA policy
+        return "na", 0.6  # NA policy (neutral tilt to avoid overly punitive gaps)
 
     for i, bin_threshold in enumerate(bins):
         if value <= bin_threshold:
@@ -97,6 +98,46 @@ def _rules_text_length(rules: Dict[str, Any]) -> Optional[int]:
     return len(text) if text else None
 
 
+def _parse_percent(value: Any) -> Optional[float]:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return float(value)
+    if isinstance(value, str):
+        match = re.search(r"([0-9]+(?:\.[0-9]+)?)", value)
+        if match:
+            try:
+                return float(match.group(1))
+            except ValueError:
+                return None
+    return None
+
+
+def _map_change_frequency(value: Any) -> Optional[int]:
+    if value is None:
+        return None
+    if isinstance(value, (int, float)):
+        return int(value)
+    if isinstance(value, str):
+        lowered = value.strip().lower()
+        mapping = {
+            "low": 1,
+            "rare": 1,
+            "stable": 1,
+            "medium": 2,
+            "moderate": 2,
+            "monthly": 2,
+            "weekly": 3,
+            "high": 4,
+            "frequent": 4,
+            "daily": 4,
+        }
+        for key, numeric in mapping.items():
+            if key in lowered:
+                return numeric
+    return None
+
+
 def _delay_days_from_frequency(freq: Optional[str]) -> Optional[int]:
     if not freq:
         return None
@@ -112,6 +153,25 @@ def _delay_days_from_frequency(freq: Optional[str]) -> Optional[int]:
     if "daily" in f:
         return 1
     return None
+
+
+def _data_completeness_ratio(record: Dict[str, Any]) -> Optional[float]:
+    keys = [
+        "payout_frequency",
+        "max_drawdown_rule",
+        "daily_drawdown_rule",
+        "rule_changes_frequency",
+        "jurisdiction",
+        "jurisdiction_tier",
+        "headquarters",
+        "founded_year",
+    ]
+    present = 0
+    for key in keys:
+        value = record.get(key)
+        if value not in (None, "", [], {}):
+            present += 1
+    return present / len(keys) if keys else None
 
 
 def _derive_scoring_fields(record: Dict[str, Any]) -> None:
@@ -176,6 +236,18 @@ def _derive_scoring_fields(record: Dict[str, Any]) -> None:
     if rules_length is not None:
         record["rules.length_signal"] = rules_length
 
+    daily_drawdown = _parse_percent(record.get("daily_drawdown_rule") or rules.get("daily_drawdown"))
+    if daily_drawdown is not None:
+        record["risk.max_daily_loss"] = daily_drawdown
+
+    max_drawdown = _parse_percent(record.get("max_drawdown_rule") or rules.get("max_drawdown"))
+    if max_drawdown is not None:
+        record["risk.max_total_loss"] = max_drawdown
+
+    change_frequency = _map_change_frequency(record.get("rule_changes_frequency") or rules.get("rule_changes_frequency"))
+    if change_frequency is not None:
+        record["rules.change_frequency"] = change_frequency
+
     jurisdiction = record.get("jurisdiction") or record.get("jurisdiction_tier")
     if jurisdiction:
         legal = record.get("legal") if isinstance(record.get("legal"), dict) else {}
@@ -194,7 +266,7 @@ def _compute_metric_score(metric_name: str, metric_def: Dict[str, Any], record: 
         weights = metric_def.get("weights", [])
 
         if not bins or not labels or not weights:
-            return 0.5, True  # NA
+            return 0.6, True  # NA
 
         value = record.get(metric_name)
 
@@ -210,7 +282,7 @@ def _compute_metric_score(metric_name: str, metric_def: Dict[str, Any], record: 
             country = record.get("legal", {}).get("company_registry_country")
             return _lookup_jurisdiction(country, matrix), country is None
 
-    return 0.5, True  # Default NA
+    return 0.6, True  # Default NA
 
 
 def _compute_pillar_score(
@@ -273,12 +345,16 @@ def compute_score_v1(record: Dict[str, Any]) -> Dict[str, Any]:
     overall_score = 100 * weighted_sum / total_weight if total_weight > 0 else 0.0
 
     na_rate = (total_na / total_metrics) * 100 if total_metrics > 0 else 0.0
+    data_completeness = _data_completeness_ratio(record)
+    if data_completeness is not None:
+        metric_scores["data.completeness"] = round(data_completeness, 3)
 
     return {
         "score_overall": round(overall_score, 2),
         "pillar_scores": pillar_scores,
         "metric_scores": metric_scores,
         "na_rate": round(na_rate, 2),
+        "data_completeness": round(data_completeness, 3) if data_completeness is not None else None,
         "version": "v1.0",
         "computed_at": None,  # Will be set by caller
     }
@@ -322,6 +398,15 @@ def score_snapshot_v1(snapshot_id: int) -> Dict[str, Any]:
         _derive_scoring_fields(rec)
         firm_id = rec["firm_id"]
         score_data = compute_score_v1(rec)
+        data_completeness = score_data.get("data_completeness")
+        if data_completeness is None:
+            confidence = "medium"
+        elif data_completeness >= 0.75:
+            confidence = "high"
+        elif data_completeness >= 0.45:
+            confidence = "medium"
+        else:
+            confidence = "low"
         score_data["firm_id"] = firm_id
         scored_records.append(score_data)
 
@@ -356,7 +441,7 @@ def score_snapshot_v1(snapshot_id: int) -> Dict[str, Any]:
                     json.dumps(score_data["pillar_scores"]),
                     json.dumps(score_data["metric_scores"]),
                     score_data["na_rate"],
-                    "high",
+                    confidence,
                 )
             )
             conn.commit()

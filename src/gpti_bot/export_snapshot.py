@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from decimal import Decimal
 from typing import Any
+from urllib.parse import urlparse
 
 from .db import connect
 from .minio import client as minio_client, put_bytes
@@ -139,6 +140,45 @@ def _parse_numeric(value: Any) -> float | None:
     return None
 
 
+def _unwrap_datapoint_value(value: Any) -> dict[str, Any]:
+    if isinstance(value, dict):
+        if isinstance(value.get("rules"), dict):
+            return value.get("rules", {})
+        if isinstance(value.get("value"), dict):
+            return value.get("value", {})
+        return value
+    return {}
+
+
+def _load_latest_datapoints(conn, firm_ids: list[str]) -> dict[str, dict[str, Any]]:
+    if not firm_ids:
+        return {}
+    cur = conn.cursor()
+    cur.execute(
+        """
+        SELECT DISTINCT ON (firm_id, key) firm_id, key, value_json
+        FROM datapoints
+        WHERE firm_id = ANY(%s)
+          AND key = ANY(%s)
+        ORDER BY firm_id, key, created_at DESC
+        """,
+        (
+            firm_ids,
+            [
+                "rules_extracted_v0",
+                "rules_extracted_from_home_v0",
+                "pricing_extracted_v0",
+                "pricing_extracted_from_home_v0",
+            ],
+        ),
+    )
+    rows = cur.fetchall()
+    payload: dict[str, dict[str, Any]] = {}
+    for firm_id, key, value_json in rows:
+        payload.setdefault(firm_id, {})[key] = value_json
+    return payload
+
+
 def _pick_pillar_score(pillar_scores: dict[str, Any] | None, keys: list[str]) -> float | None:
     if not pillar_scores:
         return None
@@ -200,6 +240,84 @@ def _infer_jurisdiction_tier(jurisdiction: str | None) -> str | None:
     return "Tier 2"
 
 
+def _infer_jurisdiction_from_url(value: str | None) -> str | None:
+    if not value:
+        return None
+    try:
+        url = value if value.startswith("http") else f"https://{value}"
+        parsed = urlparse(url)
+        host = parsed.hostname or ""
+        tld = ".".join(host.split(".")[-2:])
+        tld_map = {
+            "co.uk": "United Kingdom",
+            "uk": "United Kingdom",
+            "com.au": "Australia",
+            "au": "Australia",
+            "ca": "Canada",
+            "us": "United States",
+            "ie": "Ireland",
+            "fr": "France",
+            "de": "Germany",
+            "es": "Spain",
+            "it": "Italy",
+            "nl": "Netherlands",
+            "be": "Belgium",
+            "se": "Sweden",
+            "no": "Norway",
+            "dk": "Denmark",
+            "fi": "Finland",
+            "ch": "Switzerland",
+            "at": "Austria",
+            "pl": "Poland",
+            "cz": "Czech Republic",
+            "pt": "Portugal",
+            "sg": "Singapore",
+            "hk": "Hong Kong",
+            "jp": "Japan",
+            "cn": "China",
+            "in": "India",
+            "br": "Brazil",
+            "mx": "Mexico",
+            "za": "South Africa",
+            "ae": "United Arab Emirates",
+            "eu": "European Union",
+            "io": "International",
+            "com": "Global",
+            "net": "Global",
+            "org": "Global",
+            "co": "Global",
+        }
+        return tld_map.get(tld) or tld_map.get(host.split(".")[-1])
+    except Exception:
+        return None
+
+
+def _compute_data_completeness(record: dict[str, Any]) -> tuple[float, str]:
+    keys = [
+        "payout_frequency",
+        "max_drawdown_rule",
+        "daily_drawdown_rule",
+        "rule_changes_frequency",
+        "jurisdiction",
+        "jurisdiction_tier",
+        "headquarters",
+        "founded_year",
+    ]
+    present = 0
+    for key in keys:
+        value = record.get(key)
+        if value not in (None, "", [], {}):
+            present += 1
+    ratio = present / len(keys) if keys else 0.0
+    if ratio >= 0.75:
+        badge = "complete"
+    elif ratio >= 0.45:
+        badge = "partial"
+    else:
+        badge = "incomplete"
+    return round(ratio, 3), badge
+
+
 def _apply_derived_fields(record: dict[str, Any]) -> dict[str, Any]:
     metric_scores = record.get("metric_scores")
     pillar_scores = record.get("pillar_scores")
@@ -229,12 +347,19 @@ def _apply_derived_fields(record: dict[str, Any]) -> dict[str, Any]:
             metric_scores, ["historical_consistency", "historical.consistency"]
         )
 
+    jurisdiction = record.get("jurisdiction")
+    if not jurisdiction:
+        inferred = _infer_jurisdiction_from_url(record.get("website_root"))
+        if inferred:
+            jurisdiction = inferred
+            record = dict(record)
+            record["jurisdiction"] = inferred
+
     jurisdiction_tier = record.get("jurisdiction_tier")
     if jurisdiction_tier is None:
-        jurisdiction_tier = _infer_jurisdiction_tier(record.get("jurisdiction"))
+        jurisdiction_tier = _infer_jurisdiction_tier(jurisdiction)
     headquarters = record.get("headquarters")
     if not headquarters:
-        jurisdiction = record.get("jurisdiction")
         if jurisdiction and "global" not in str(jurisdiction).lower():
             headquarters = jurisdiction
     if jurisdiction_tier is None:
@@ -259,6 +384,9 @@ def _apply_derived_fields(record: dict[str, Any]) -> dict[str, Any]:
         enriched["headquarters"] = headquarters
     if na_policy_applied is not None:
         enriched["na_policy_applied"] = na_policy_applied
+    data_completeness, data_badge = _compute_data_completeness(enriched)
+    enriched["data_completeness"] = data_completeness
+    enriched["data_badge"] = data_badge
     return enriched
 
 
@@ -363,6 +491,8 @@ def build_public_snapshot(snapshot_id: int, snapshot_key: str, version_key: str 
         )
         rows = cur.fetchall()
 
+        datapoints = _load_latest_datapoints(conn, [row[0] for row in rows])
+
         overrides = _load_overrides()
         records = []
         for (
@@ -391,7 +521,16 @@ def build_public_snapshot(snapshot_id: int, snapshot_key: str, version_key: str 
             audit_verdict,
             oversight_gate_verdict,
         ) in rows:
+            firm_datapoints = datapoints.get(firm_id, {})
+            rules_value = firm_datapoints.get("rules_extracted_v0") or firm_datapoints.get("rules_extracted_from_home_v0")
+            pricing_value = firm_datapoints.get("pricing_extracted_v0") or firm_datapoints.get("pricing_extracted_from_home_v0")
+            rules_data = _unwrap_datapoint_value(rules_value)
+            pricing_data = _unwrap_datapoint_value(pricing_value)
             display_name = brand_name or name
+            payout_frequency = pricing_data.get("payout_frequency") or rules_data.get("payout_frequency")
+            max_drawdown_rule = rules_data.get("max_drawdown_rule") or rules_data.get("max_drawdown")
+            daily_drawdown_rule = rules_data.get("daily_drawdown_rule") or rules_data.get("daily_drawdown")
+            rule_changes_frequency = rules_data.get("rule_changes_frequency") or rules_data.get("rule_change_frequency")
             record = {
                 "firm_id": firm_id,
                 "name": display_name,
@@ -405,6 +544,10 @@ def build_public_snapshot(snapshot_id: int, snapshot_key: str, version_key: str 
                 "founded_year": founded_year,
                 "status_gtixt": status_gtixt,
                 "executive_summary": executive_summary,
+                "payout_frequency": payout_frequency,
+                "max_drawdown_rule": max_drawdown_rule,
+                "daily_drawdown_rule": daily_drawdown_rule,
+                "rule_changes_frequency": rule_changes_frequency,
                 "score_0_100": float(score_0_100) if score_0_100 is not None else None,
                 "pillar_scores": pillar_scores,
                 "metric_scores": metric_scores,

@@ -3,7 +3,7 @@ import json
 import os
 from typing import Any, Dict
 
-from .ollama_client import generate
+from gpti_bot.llm.ollama_client import generate
 
 SYSTEM_PROMPT = """You extract pricing and payout information from text.
 Return STRICT JSON only (no markdown).

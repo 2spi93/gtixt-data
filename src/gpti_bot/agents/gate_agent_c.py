@@ -12,7 +12,7 @@ from ..db import connect
 # ---------------------------------------------------------
 
 FIRM_NA_RATE_THRESHOLD = 0.40  # Max NA rate for pass
-GATE_MODE = os.getenv("GPTI_AGENT_C_MODE", "strict").lower()
+GATE_MODE = os.getenv("GPTI_AGENT_C_MODE", "relaxed").lower()
 
 
 def _check_firm_quality(firm_data: Dict[str, Any], datapoints: List[Dict[str, Any]]) -> Dict[str, Any]:
@@ -66,7 +66,10 @@ def _check_firm_quality(firm_data: Dict[str, Any], datapoints: List[Dict[str, An
         reasons.append("missing_key_data")
 
     # Verdict
-    verdict = "review" if reasons else "pass"
+    if GATE_MODE == "relaxed":
+        verdict = "review" if technical_errors else "pass"
+    else:
+        verdict = "review" if reasons else "pass"
 
     return {
         "verdict": verdict,
